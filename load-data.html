@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load Sample Travel Data</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: background 0.2s;
+        }
+        
+        .btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .btn.danger {
+            background: #ff3b30;
+        }
+        
+        .btn.danger:hover {
+            background: #e6342a;
+        }
+        
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .status.warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+        
+        .trip-list {
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .trip-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .trip-location {
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .trip-details {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧳 Travel Log Data Manager</h1>
+        <p>Load sample travel data into your Travel Log application.</p>
+        
+        <div class="actions">
+            <button class="btn" onclick="loadSampleData()">📥 Load Sample Data</button>
+            <button class="btn danger" onclick="clearData()">🗑️ Clear All Data</button>
+            <button class="btn" onclick="showCurrentData()">📊 Show Current Data</button>
+            <button class="btn" onclick="openTravelLog()">🚀 Open Travel Log</button>
+        </div>
+        
+        <div id="status" class="status"></div>
+        
+        <div id="tripList" class="trip-list"></div>
+    </div>
+
+    <script src="load-sample-data.js"></script>
+    <script>
+        function showStatus(message, type = 'success') {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+            status.style.display = 'block';
+            
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 3000);
+        }
+
+        function loadSampleData() {
+            try {
+                const data = loadSampleData();
+                const tripCount = Object.values(data).reduce((total, yearData) => 
+                    total + Object.values(yearData).reduce((yearTotal, monthData) => 
+                        yearTotal + monthData.length, 0), 0);
+                
+                showStatus(`✅ Successfully loaded ${tripCount} trips!`);
+                showCurrentData();
+            } catch (error) {
+                showStatus(`❌ Error loading data: ${error.message}`, 'warning');
+            }
+        }
+
+        function clearData() {
+            if (confirm('Are you sure you want to clear all travel data? This cannot be undone.')) {
+                localStorage.removeItem('travelLogData');
+                localStorage.removeItem('travelLogSearchHistory');
+                localStorage.removeItem('travelLogTheme');
+                showStatus('🗑️ All data cleared successfully!');
+                document.getElementById('tripList').innerHTML = '';
+            }
+        }
+
+        function showCurrentData() {
+            const data = JSON.parse(localStorage.getItem('travelLogData') || '{}');
+            const tripList = document.getElementById('tripList');
+            
+            if (Object.keys(data).length === 0) {
+                tripList.innerHTML = '<p style="text-align: center; color: #666;">No travel data found. Load sample data to get started!</p>';
+                return;
+            }
+
+            let html = '<h3>Current Travel Data:</h3>';
+            
+            Object.keys(data).sort((a, b) => b - a).forEach(year => {
+                const yearData = data[year];
+                const yearTrips = Object.values(yearData).flat();
+                
+                html += `<h4>${year} (${yearTrips.length} trips)</h4>`;
+                
+                Object.keys(yearData).sort((a, b) => b - a).forEach(month => {
+                    const monthNames = [
+                        'January', 'February', 'March', 'April', 'May', 'June',
+                        'July', 'August', 'September', 'October', 'November', 'December'
+                    ];
+                    
+                    yearData[month].forEach(trip => {
+                        html += `
+                            <div class="trip-item">
+                                <div>
+                                    <div class="trip-location">${trip.location}</div>
+                                    <div class="trip-details">${monthNames[month]} ${year} • ${trip.details}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                });
+            });
+            
+            tripList.innerHTML = html;
+        }
+
+        function openTravelLog() {
+            window.open('index.html', '_blank');
+        }
+
+        // Show current data on page load
+        showCurrentData();
+    </script>
+</body>
+</html>

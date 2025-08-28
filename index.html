@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Log</title>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">Travel Log</h1>
+            <div class="header-actions">
+                <button class="search-trigger" title="Search (Cmd+K)">
+                    <i data-lucide="search"></i>
+                    <span>Search</span>
+                    <kbd>⌘K</kbd>
+                </button>
+                <button class="theme-toggle" title="Toggle Theme">
+                    <i data-lucide="palette"></i>
+                </button>
+                <button class="export-btn" title="Export Data">
+                    <i data-lucide="download"></i>
+                </button>
+                <button class="import-btn" title="Import Data">
+                    <i data-lucide="upload"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Year Navigation -->
+        <nav class="year-nav">
+            <button class="nav-btn prev-year" title="Previous Year">
+                <i data-lucide="chevron-left"></i>
+            </button>
+            <h2 class="current-year">2024</h2>
+            <button class="nav-btn next-year" title="Next Year">
+                <i data-lucide="chevron-right"></i>
+            </button>
+        </nav>
+
+        <!-- Monthly Grid -->
+        <main class="monthly-grid">
+            <!-- Will be populated by JavaScript -->
+        </main>
+
+        <!-- Add Entry Button -->
+        <button class="add-entry-fab" title="Add Travel Entry">
+            <i data-lucide="plus"></i>
+        </button>
+    </div>
+
+    <!-- Command K Search Bar -->
+    <div class="command-bar-overlay" id="commandBar">
+        <div class="command-bar">
+            <div class="search-input-container">
+                <i data-lucide="search"></i>
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    placeholder="Search your travels..." 
+                    id="searchInput"
+                    autocomplete="off"
+                >
+                <kbd class="search-shortcut" id="escapeButton" role="button" tabindex="0" title="Close search">ESC</kbd>
+            </div>
+            <div class="search-results" id="searchResults">
+                <!-- Search results will be populated here -->
+            </div>
+            <div class="search-footer">
+                <div class="search-tips">
+                    <span>Try: "Paris", "2023 summer", "December travels"</span>
+                </div>
+                <div class="search-shortcuts">
+                    <kbd>↑↓</kbd> Navigate
+                    <kbd>Enter</kbd> Select
+                    <kbd>ESC</kbd> Close
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unified Travel Modal (Add/Edit) -->
+    <div class="modal-overlay" id="travelModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add Travel Entry</h3>
+                <button class="modal-close">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form class="modal-form" id="travelForm">
+                <div class="modal-content">
+                    <div class="form-group">
+                        <label for="entryMonth">Month</label>
+                        <select id="entryMonth" required>
+                            <option value="">Select Month</option>
+                            <option value="0">January</option>
+                            <option value="1">February</option>
+                            <option value="2">March</option>
+                            <option value="3">April</option>
+                            <option value="4">May</option>
+                            <option value="5">June</option>
+                            <option value="6">July</option>
+                            <option value="7">August</option>
+                            <option value="8">September</option>
+                            <option value="9">October</option>
+                            <option value="10">November</option>
+                            <option value="11">December</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="entryLocation">Location</label>
+                        <input type="text" id="entryLocation" required placeholder="e.g. Paris, France">
+                    </div>
+                    <div class="form-group">
+                        <label for="entryDetails">Travel Dates & Details</label>
+                        <textarea id="entryDetails" rows="4" placeholder="When did you go? What did you do?"></textarea>
+                    </div>
+                    <button type="button" class="btn-danger" id="deleteBtn" style="display: none;">
+                        <i data-lucide="trash-2"></i>
+                        Delete
+                    </button>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary modal-cancel">Cancel</button>
+                    <button type="submit" class="btn-primary" id="submitBtn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hidden file input for import -->
+    <input type="file" id="importFileInput" accept=".json" style="display: none;">
+
+    <script src="script.js"></script>
+</body>
+</html>

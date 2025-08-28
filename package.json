@@ -1,0 +1,36 @@
+{
+  "name": "travel-log",
+  "version": "1.0.0",
+  "description": "A modern, interactive travel logging application with powerful Command K search functionality",
+  "main": "index.html",
+  "scripts": {
+    "start": "./start.sh start",
+    "dev": "./start.sh start",
+    "test": "./start.sh test",
+    "data": "./start.sh data",
+    "stop": "./start.sh stop",
+    "restart": "./start.sh restart",
+    "status": "./start.sh status"
+  },
+  "keywords": [
+    "travel",
+    "log",
+    "journal",
+    "search",
+    "glassmorphism",
+    "vanilla-js"
+  ],
+  "author": "Travel Log Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/travel-log.git"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "python": ">=3.6.0"
+  },
+  "dependencies": {
+    "playwright": "^1.55.0"
+  }
+}

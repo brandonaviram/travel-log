@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Log - TDD Tests</title>
+    <style>
+        body {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-header {
+            border-bottom: 2px solid #333;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .run-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 20px 0;
+        }
+        .run-button:hover {
+            background: #5a6fd8;
+        }
+        #console-output {
+            background: #000;
+            padding: 20px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            font-family: inherit;
+            max-height: 600px;
+            overflow-y: auto;
+            border: 1px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-header">
+        <h1>🧪 Travel Log TDD Tests</h1>
+        <p>Test-Driven Development for critical Travel Log functionality</p>
+        <button class="run-button" onclick="runTests()">Run All Tests</button>
+    </div>
+
+    <div id="console-output"></div>
+
+    <!-- Load the test runner -->
+    <script src="test-runner.js"></script>
+    
+    <!-- Load the main application (for testing isolated functions) -->
+    <script src="script.js"></script>
+    
+    <!-- Load test suites -->
+    <script src="tests/search.test.js"></script>
+    <script src="tests/theme.test.js"></script>
+    <script src="tests/data.test.js"></script>
+
+    <script>
+        // Capture console output for display
+        const originalConsole = window.console;
+        const consoleOutput = document.getElementById('console-output');
+        
+        window.console = {
+            ...originalConsole,
+            log: (...args) => {
+                originalConsole.log(...args);
+                consoleOutput.textContent += args.join(' ') + '\n';
+                consoleOutput.scrollTop = consoleOutput.scrollHeight;
+            }
+        };
+
+        async function runTests() {
+            consoleOutput.textContent = '';
+            await testRunner.runAll();
+        }
+
+        // Auto-run tests on page load
+        window.addEventListener('load', () => {
+            setTimeout(runTests, 100);
+        });
+    </script>
+</body>
+</html>
