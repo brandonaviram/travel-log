@@ -201,7 +201,6 @@
 [data-theme="mono"] .import-btn,
 [data-theme="mono"] .theme-toggle,
 [data-theme="mono"] .modal,
-[data-theme="mono"] .command-bar,
 [data-theme="mono"] .add-entry-fab,
 [data-theme="mono"] .year-nav {
     border: 3px solid #000000;
@@ -213,16 +212,25 @@
     transition: all 0.1s ease;
 }
 
-[data-theme="mono"] .search-input {
-    border: 2px solid #000000 !important;
-    border-radius: 0 !important;
-    background: #ffffff !important;
-    color: #000000 !important;
+[data-theme="mono"] .command-bar {
+    border: 3px solid #000000;
+    border-radius: 12px !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.98) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    transition: all 0.1s ease;
+}
+
+/* Search input uses default elegant styling */
+[data-theme="mono"] .search-input-container {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background: transparent;
 }
 
 [data-theme="mono"] .search-results,
 [data-theme="mono"] .search-footer {
-    border-top: 2px solid #000000 !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
 }
 
 [data-theme="mono"] .search-shortcut,
@@ -274,12 +282,19 @@
     color: #000000 !important;
 }
 
-[data-theme="mono"] input,
+[data-theme="mono"] input:not(.search-input),
 [data-theme="mono"] textarea,
 [data-theme="mono"] select {
     border: 2px solid #000000 !important;
     border-radius: 0 !important;
     background: #ffffff !important;
+    color: #000000 !important;
+}
+
+/* Search input keeps elegant default styling */
+[data-theme="mono"] .search-input {
+    border: none !important;
+    background: transparent !important;
     color: #000000 !important;
 }
 
