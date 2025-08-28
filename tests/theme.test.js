@@ -57,17 +57,17 @@ describe('Theme Management', () => {
             };
             
             const theme = travelLog.getInitialTheme();
-            expect(theme).toBe('light'); // Should fallback to default
+            expect(theme).toBe('mono'); // Should fallback to mono default
         });
 
-        it('should return light theme as default when no saved theme', () => {
+        it('should return mono theme as default when no saved theme', () => {
             window.localStorage.getItem = () => null;
             
             // Mock matchMedia to avoid dark mode detection
             window.matchMedia = () => ({ matches: false });
             
             const theme = travelLog.getInitialTheme();
-            expect(theme).toBe('light');
+            expect(theme).toBe('mono');
         });
 
         it('should detect dark mode preference when no saved theme', () => {
